@@ -1,0 +1,38 @@
+*{
+    font-family: 'Times New Roman', Times, serif;
+}
+body{
+    padding-top: 2%;
+    color:black;
+}
+h2{
+    text-align: center;
+    margin-top: 2px;
+}
+#thanks{
+    text-align: center;
+    margin-top: 5px;
+}
+.row{
+    margin-top: 5px;
+}
+.container{
+    border: 2px solid black;
+    height: 101%;
+    width: 96%;
+    background-color: lightblue;
+}
+#role{
+      width: 100%;
+      border-radius: 5px;
+}
+.btn{
+    margin-left: 38%;
+    margin-top:2% ;
+}
+#Info{
+margin-left: 45%;
+}
+#back{
+    margin-left: 43%;
+}
