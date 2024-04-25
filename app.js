@@ -528,7 +528,6 @@ ${users.map( user => `
 app.post('/searching', async(req,res) =>{
   const email = req.body.email;
   const users = await searchMail(email);
-  console.log(users);
   res.send(`
   <!DOCTYPE html>
   <html lang="en">
