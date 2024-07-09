@@ -80,14 +80,76 @@ app.post('/insert-info',async(req, res) => {
               <title>Table</title>
            </head>
            <body>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              <strong>${email}</strong> has been inserted successfully.
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          <div>
-             <button type="submit" class=" btn btn-outline-info" onclick="window.location.href = 'http://127.0.0.1:5500/home.html';">Back to home page</button>
-          </div>
-          <table class="table table-striped table-dark " style="margin-top: 4px;">
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>${email}</strong> has been inserted successfully.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div>
+                <button type="submit" class=" btn btn-outline-info" onclick="window.location.href = 'http://127.0.0.1:5500/home.html';">Back to home page</button>
+              </div>
+              <table class="table table-striped table-dark " style="margin-top: 4px;">
+                <thead>
+                  <tr>
+                    <th scope="col">NAME</th>
+                    <th scope="col">EMAIL ID</th>
+                    <th scope="col">MOBILE NUMBER</th>
+                    <th scope="col">ADDRESS</th>
+                    <th scope="col">ROLE</th>
+                    <th scope="col">COURSE</th>
+                    <th scope="col">FEEDBACK</th>
+                    <th scope="col">PICTURE</th>
+                    <th scope="col" colspan = "2">DELETE/UPDATE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 ${users.map( user => `
+                    <tr>
+                      <td> ${ user.NAME }</td>
+                      <td>${ user.EMAIL_ID }</td>
+                      <td>${ user.MOBILE_NO }</td>
+                      <td>${ user.ADDRESS }</td>
+                      <td>${ user.ROLE }</td>
+                      <td>${ user.IMPROVING_FIELD }</td>
+                      <td>${ user.FEEDBACK }</td>
+                      ${user.pic_path ? `
+                        <td> <img src="/${user.pic_path}" alt="pic" width="70" height="70" style="border-radius:50%">
+                        </td>` : `<td></td>`}
+                      <td>
+                        <form action = "http://localhost:3000/dlt-user/${user.EMAIL_ID}" method = "post">
+                          <button type = "submit" class = "btn btn-danger btn-sm">Delete</button>
+                        </form>    
+                      </td>
+                      <td>
+                        <form action = "http://localhost:3000/update/${user.EMAIL_ID}" method = "get">
+                          <button type = "submit" class = "btn btn-info btn-sm">Edit</button>
+                        </form>    
+                      </td>    
+                    </tr>
+                 `).join('')}
+                </tbody>
+              </table>
+            </body>
+           </html>
+          `)}
+});
+           
+app.get('/get-users', async(req, res) => {
+  const users = await getUsers();
+  res.send(
+    `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>INFORMATION</title>
+      </head>
+      <body>
+        <div>
+          <button type="submit" class=" btn btn-outline-info" onclick="window.location.href = 'http://127.0.0.1:5500/home.html';">Back to home page</button>
+        </div> 
+        <table class="table table-striped table-dark" style="margin-top: 4px;">
           <thead>
             <tr>
               <th scope="col">NAME</th>
@@ -99,10 +161,10 @@ app.post('/insert-info',async(req, res) => {
               <th scope="col">FEEDBACK</th>
               <th scope="col">PICTURE</th>
               <th scope="col" colspan = "2">DELETE/UPDATE</th>
-           </tr>
+            </tr>
           </thead>
           <tbody>
-              ${users.map( user => `
+            ${users.map( user => `
                 <tr>
                   <td> ${ user.NAME }</td>
                   <td>${ user.EMAIL_ID }</td>
@@ -112,8 +174,9 @@ app.post('/insert-info',async(req, res) => {
                   <td>${ user.IMPROVING_FIELD }</td>
                   <td>${ user.FEEDBACK }</td>
                   ${user.pic_path ? `
-                  <td> <img src="/${user.pic_path}" alt="pic" width="70" height="70" style="border-radius:50%">
-                 </td>` : `<td></td>`}
+                    <td>
+                       <img src="/${user.pic_path}" alt="pic" width="70" height="70" style="border-radius:50%">
+                    </td>` : `<td></td>`}
                   <td>
                     <form action = "http://localhost:3000/dlt-user/${user.EMAIL_ID}" method = "post">
                       <button type = "submit" class = "btn btn-danger btn-sm">Delete</button>
@@ -125,77 +188,12 @@ app.post('/insert-info',async(req, res) => {
                     </form>    
                   </td>    
                 </tr>
-              `).join('')}
+             `).join('')}
           </tbody>
         </table>
       </body>
-    </html>
-  `)}
-});
-           
-app.get('/get-users', async(req, res) => {
-  const users = await getUsers();
-  res.send(
-    `
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <title>Table</title>
-</head>
-<body>
-      <div>
-        <button type="submit" class=" btn btn-outline-info" onclick="window.location.href = 'http://127.0.0.1:5500/home.html';">Back to home page</button>
-      </div> 
-    <table class="table table-striped table-dark" style="margin-top: 4px;">
-        <thead>
-          <tr>
-            <th scope="col">NAME</th>
-            <th scope="col">EMAIL ID</th>
-            <th scope="col">MOBILE NUMBER</th>
-            <th scope="col">ADDRESS</th>
-            <th scope="col">ROLE</th>
-            <th scope="col">COURSE</th>
-            <th scope="col">FEEDBACK</th>
-            <th scope="col">PICTURE</th>
-            <th scope="col" colspan = "2">DELETE/UPDATE</th>
-          </tr>
-        </thead>
-        <tbody>
-        ${users.map( user => `
-        <tr>
-            <td> ${ user.NAME }</td>
-            <td>${ user.EMAIL_ID }</td>
-            <td>${ user.MOBILE_NO }</td>
-            <td>${ user.ADDRESS }</td>
-            <td>${ user.ROLE }</td>
-            <td>${ user.IMPROVING_FIELD }</td>
-            <td>${ user.FEEDBACK }</td>
-            ${user.pic_path ? `
-             <td> <img src="/${user.pic_path}" alt="pic" width="70" height="70" style="border-radius:50%">
-            </td>` : `<td></td>`}
-            <td>
-               <form action = "http://localhost:3000/dlt-user/${user.EMAIL_ID}" method = "post">
-                  <button type = "submit" class = "btn btn-danger btn-sm">Delete</button>
-               </form>    
-            </td>
-            <td>
-            <form action = "http://localhost:3000/update/${user.EMAIL_ID}" method = "get">
-               <button type = "submit" class = "btn btn-info btn-sm">Edit</button>
-            </form>    
-         </td>    
-          </tr>
-        `).join('')}
-        </tbody>
-      </table>
-      
-
-</body>
-</html>`
-  );
+     </html>`
+    );
 });
 
 app.post('/dlt-user/:email', async(req, res) =>{
@@ -215,35 +213,35 @@ app.post('/dlt-user/:email', async(req, res) =>{
       <!DOCTYPE html>
       <html lang="en">
       <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-          <title>Table</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <title>Table</title>
       </head>
       <body>
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>${email}</strong> has been deleted successfully.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      <div>
-        <button type="submit" class=" btn btn-outline-info" onclick="window.location.href = 'http://127.0.0.1:5500/home.html';">Back to home page</button>
-      </div>
-    <table class="table table-striped table-dark ">
-        <thead>
-          <tr>
-            <th scope="col">NAME</th>
-            <th scope="col">EMAIL ID</th>
-            <th scope="col">MOBILE NUMBER</th>
-            <th scope="col">ADDRESS</th>
-            <th scope="col">ROLE</th>
-            <th scope="col">COURSE</th>
-            <th scope="col">FEEDBACK</th>
-            <th scope="col">PICTURE</th>
-            <th scope="col" colspan = "2">DELETE/UPDATE</th>
-          </tr>
-        </thead>
-        <tbody>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>${email}</strong> has been deleted successfully.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div>
+          <button type="submit" class=" btn btn-outline-info" onclick="window.location.href = 'http://127.0.0.1:5500/home.html';">Back to home page</button>
+        </div>
+        <table class="table table-striped table-dark ">
+          <thead>
+            <tr>
+              <th scope="col">NAME</th>
+              <th scope="col">EMAIL ID</th>
+              <th scope="col">MOBILE NUMBER</th>
+              <th scope="col">ADDRESS</th>
+              <th scope="col">ROLE</th>
+              <th scope="col">COURSE</th>
+              <th scope="col">FEEDBACK</th>
+              <th scope="col">PICTURE</th>
+              <th scope="col" colspan = "2">DELETE/UPDATE</th>
+            </tr>
+          </thead>
+          <tbody>
         ${users.map( user => `
         <tr>
             <td> ${ user.NAME }</td>
